@@ -19,9 +19,9 @@ allOpen{
 //apply(plugin = "io.spring.dependency-management")
 repositories {
 	mavenCentral()
-	maven {
-		url = uri("https://plugins.gradle.org/m2/")
-	}
+	//maven {
+	//	url = uri("https://plugins.gradle.org/m2/")
+	//}
 }//https://choiseonjae.github.io/java/maven/repository/%EA%B0%9C%EC%9A%94/    mavencentral?관련 링크
 
 dependencies {
@@ -30,7 +30,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-	implementation("org.springframework.boot:spring-boot-stater-web")//웹관련의존성
+	implementation("org.springframework.boot:spring-boot-starter-web")//웹관련의존성
 	implementation("org.jetbrains.kotlin:kotlin-reflect")//리플렉션기능
 
 	runtimeOnly("mysql:mysql-connector-java")
