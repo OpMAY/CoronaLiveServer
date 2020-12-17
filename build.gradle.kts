@@ -16,12 +16,9 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 allOpen{
 	annotation("javax.persistence.Entity")
 }
-//apply(plugin = "io.spring.dependency-management")
+
 repositories {
 	mavenCentral()
-	//maven {
-	//	url = uri("https://plugins.gradle.org/m2/")
-	//}
 }//https://choiseonjae.github.io/java/maven/repository/%EA%B0%9C%EC%9A%94/    mavencentral?관련 링크
 
 dependencies {
@@ -47,4 +44,4 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 //이거 패키지는 대문자가 아니라 소문자로 하는거라 배우기도 햇고 하다보니 에러아니고 고칠수도 있는 것들에 그내용도 있길래 고쳐놓음 확인하고 지우긔
-//그레이들설정이 원래랑 달라서 뭐지하고 보니까 원래는 groovy로 했는데 이거는 kotlin으로 되어잇더라구 그래서 그거 맞춰서 써놓긴했엉
+
