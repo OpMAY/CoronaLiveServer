@@ -31,6 +31,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")//리플렉션기능
 
 	runtimeOnly("mysql:mysql-connector-java")
+	implementation("org.seleniumhq.selenium:selenium-chrome-driver")
+	implementation("org.seleniumhq.selenium:selenium-server:3.9.1")
 }
 
 tasks.withType<KotlinCompile> {
