@@ -8,4 +8,6 @@ class CoronaLiveServerApplication
 
 fun main() {
 	runApplication<CoronaLiveServerApplication>()
+	val c = Chrolling()
+	c.navigate()
 }
