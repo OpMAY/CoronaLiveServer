@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 
 
-class Chrolling {
+class Crolling {
 
     fun navigate(){
         setProperty()
@@ -18,7 +18,6 @@ class Chrolling {
         driver.get(URL)
         js.executeScript("document.getElementById('bbs_page').value = $startPage;")
         driver.findElement(By.cssSelector("a.go_btn"))
-        //driver.switchTo().frame(iFrame)
         driver.findElement(By.tagName("button")).click()
         driver.findElements(By.id("bbs_tr_0_bbs_title"))[0].click()
         val errorCount = 0
@@ -41,6 +40,7 @@ class Chrolling {
 
     }
     fun script(key : String, value : String){
+        //자바스크립트 실행 구문 예시
         //js.executeScript("window.sessionStorage.setItem($key,$value);")
         /*val js = driver as JavascriptExecutor
         val button = driver.findElement(By.name("btnLogin"))
