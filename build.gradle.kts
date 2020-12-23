@@ -28,6 +28,10 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	implementation("org.springframework.boot:spring-boot-starter-web")//웹관련의존성
+	//데이터 베이스를 사용하기 위해 JPA 사용 -> 쿼리문으로 처리하지 않고 코틀린 문법으로 처리하는 ORM 사용하기 위해 내장되어있는 Hibernate 사용을 위함
+	//이 부분이 상당히 어려움
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
 	implementation("org.jetbrains.kotlin:kotlin-reflect")//리플렉션기능
 
 	runtimeOnly("mysql:mysql-connector-java")
