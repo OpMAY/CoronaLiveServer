@@ -21,7 +21,6 @@ class Crolling {
         //PAGE SET
         js.executeScript("document.getElementById('bbs_page').value = $startPage;")
         driver.findElement(By.cssSelector("a.go_btn")).click()
-        driver.findElement(By.tagName("button")).click()
 
         //글의 번호 가져오기
         val pNum = driver.findElement(By.id("bbs_tr_0_num_td"))
