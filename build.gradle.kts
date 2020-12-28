@@ -37,6 +37,7 @@ dependencies {
 	runtimeOnly("mysql:mysql-connector-java")
 	implementation("org.seleniumhq.selenium:selenium-chrome-driver")
 	implementation("org.seleniumhq.selenium:selenium-server:3.9.1")
+	implementation ("com.h2database:h2")
 }
 
 tasks.withType<KotlinCompile> {
