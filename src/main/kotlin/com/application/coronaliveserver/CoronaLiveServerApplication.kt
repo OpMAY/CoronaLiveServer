@@ -7,7 +7,11 @@ import org.springframework.boot.runApplication
 class CoronaLiveServerApplication
 
 fun main() {
+	//서버 구동
 	runApplication<CoronaLiveServerApplication>()
-	val c = Chrolling()
+
+	//크롤링 시행
+	val c = Crolling()
 	c.navigate()
+	//TODO:크롤링 주기 설정
 }
