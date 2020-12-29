@@ -24,7 +24,7 @@ class Crolling {
 
         //글의 번호 가져오기
         val pNum = driver.findElement(By.id("bbs_tr_0_num_td"))
-        println("${pNum.text}")
+        println(pNum.text)
 
         //CLICK POST
         driver.findElements(By.id("bbs_tr_0_bbs_title"))[0].click()
