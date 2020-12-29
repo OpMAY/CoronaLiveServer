@@ -12,7 +12,7 @@ class Crolling {
         setProperty() // Set driver System path property
         val driver: WebDriver = ChromeDriver()
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
-        val startPage = 2 // Start Page
+        val startPage = 1 // Start Page
         val count = 10 // 가져올 글 갯수
 
         //URL OPEN
@@ -27,6 +27,7 @@ class Crolling {
         println("${pNum.text}")
 
         //CLICK POST
+        Thread.sleep(500)
         driver.findElements(By.id("bbs_tr_0_bbs_title"))[0].click()
         val errorCount = 0
         for (i in 1..count) {

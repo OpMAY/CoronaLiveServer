@@ -37,7 +37,7 @@ dependencies {
 	runtimeOnly("mysql:mysql-connector-java")
 	implementation("org.seleniumhq.selenium:selenium-chrome-driver")
 	implementation("org.seleniumhq.selenium:selenium-server:3.9.1")
-	implementation ("com.h2database:h2")
+	implementation("org.mariadb.jdbc:mariadb-java-client") // 마리아 db연결 드라이버 그냥 내장으로 넣어버림
 }
 
 tasks.withType<KotlinCompile> {

@@ -70,7 +70,7 @@
           <config-type value="CUSTOM" />
           <database-version value="10.5" />
           <driver-source value="EXTERNAL" />
-          <driver-library value="C:\Users\mikel\Downloads\mariadb-java-client-2.7.1.jar" />
+          <driver-library value="E:\coronalivelibrary\mariadb-java-client-2.7.1.jar" />
           <driver value="org.mariadb.jdbc.Driver" />
           <url value="jdbc:mariadb://127.0.0.1:3307/coronaliveserver?useUnicode=true&amp;characterEncoding=utf8&amp;autoreconnect=true&amp;useSSL=false" />
           <type value="USER_PASSWORD" />
