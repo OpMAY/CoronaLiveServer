@@ -13,7 +13,7 @@ class Crolling {
         val driver: WebDriver = ChromeDriver()
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
         val startPage = 1 // Start Page
-        val count = 10 // 가져올 글 갯수
+        val count = 1 // 가져올 글 갯수
 
         //URL OPEN
         driver.get(URL)
@@ -21,13 +21,14 @@ class Crolling {
         //PAGE SET
         js.executeScript("document.getElementById('bbs_page').value = $startPage;")
         driver.findElement(By.cssSelector("a.go_btn")).click()
+        Thread.sleep(500) // 0.5s delay
 
         //글의 번호 가져오기
         val pNum = driver.findElement(By.id("bbs_tr_0_num_td"))
         println("${pNum.text}")
 
         //CLICK POST
-        Thread.sleep(500)
+        Thread.sleep(500) // 0.5s delay
         driver.findElements(By.id("bbs_tr_0_bbs_title"))[0].click()
         val errorCount = 0
         for (i in 1..count) {
@@ -36,8 +37,8 @@ class Crolling {
             val tList = rePlys.findElements(By.id("sj"))
             val title = tList[0].text
             val text = rePlys.findElements(By.id("cn"))[0].text
-            println("$i \n제목 : $title")
-            println("내용 : $text\n")
+            analyseContext(title, text)
+
 
             //Next Article
             val ulBoard = driver.findElement(By.cssSelector("ul.boardView_listWrap"))
@@ -62,7 +63,10 @@ class Crolling {
         js.executeScript("console.log('hello world')")
     }*/
     fun analyseContext(title: String, text: String) {
+        println("제목 : $title")
+        println("내용 : $text\n")
         TODO("제목, 내용 String 안의 글을 분석할 method")
+        
     }
 
     companion object {
