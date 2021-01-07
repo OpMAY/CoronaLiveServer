@@ -1,0 +1,82 @@
+재난문자 기준
+
+제외 할 경우
+case 1 : 코로나 정보가 아닌 경우 (산불 경보, 재난 경보)
+->구분하기 쉬움 : 특정 키워드만 나오면 제외하면 될 것으로 보임
+
+case 2 : 코로나 확진자의 정보가 아닌 경우 (특정지역 방문자 검사를 요청하는 글)
+-> 3-3 과 겹치는 경우가 있음. 자체적인 분석으로 로직을 통해 검토하는 것 외의 방법이 필요해보임
+
+case 3 : 코로나 확진자의 정보가 나왔지만 집계하지 않는 경우
+case 3-1 : 당일 제외 다른날 집계가 된 경우
+- 이전 지표와 비교하며 판단할 로직을 짜야함
+ex) 3명 중 2명은 어제 집계 -> 판단 어떻게?
+case 3-2 : 전날 확진자의 번호가 나올 경우
+- 명수와 번호를 매칭시킬 수 있는 로직 필요
+case 3-3 : 기존에 있던 확진자의 접촉자 정보
+- 해당 확진자의 번호가 존재하는지 보고 있다면 폐기
+
+등록
+확진자 명 수 제외하는 경우 외의 
+case 1 : 확진자 번호만 언급하는 경우 (00번 확진자 발생)
+- 당일 집계 확진자 번호를 확실하게 판단하여 db에 넣기
+case 2 : 몇명인지 언급하는 경우(0명 발생)
+- 집계 날짜 확인 후 넣기, 제외 3-2와 비슷한 로직
+case 3 : 1,2 모두 해당
+- 명수와 번호의 숫자를 구분할 방법 찾기
+
+문자의 기준
+- 글 제목에 00구청, 00군청, 00시청 으로 나와있음 or 내용 마지막에 발송지역 나와있음
+-> 서울시에서 통합하여 여러 구로 나눠 보내는 경우도 있으므로 내용 마지막 부분의 송출 지역으로 판별하는 것이 나아보임
+
+
+화면 구성 
+1. 기본화면 
+- 현재 시간 / 날짜, 총 확진자 수, 실시간 확진자 수(+ 전일대비 증가량)
+Time, Date, TotalInfected(+Increased), LiveInfected(+Increased)
+- 증가량, 수 그래프 및 도표
+- 대분류 지역별 총 확진자/실시간 확진자 수 (+ 전일 대비 증가량)
+bigCity / bcTotalInfected(+Inc), bcLiveInfected(+Inc)
+
+2. 대분류 지역 상세화면
+- 현재시간 / 지역 총 확진자수, 실시간 확진자 수 (+전일 대비 증가량), 이에 대한 그래프
+기본화면에서 받아오면 됨
+- 지역 내의 소도시별 총 확진자/실시간 확진자 수 (+전일 대비 증가량)
+smallCity / scTotalInfected(+Inc), scLiveInfected(+Inc)
+
+3. 소분류 지역 상세화면
+- 오늘 발표 / 확인 중 / 어제 집계 / 오늘 확진자
+todayAnnounced, checkingDate, yInfected, tInfected
+- 00시간, 분 전 00시 0명 추가 확진 -> 클릭 시 문자 내용, 오류제보 가능
+announcedTime, smallCity, scInfectedPlus, messageInfo, feedBack
+
+기본 데이터 구성
+1. 지역 별 번호 및 key를 달아야함
+- 대분류, 소분류
+2. 화면 구성 내의 변수
+Time, Date : 라이브러리 이용 -> 기본요소
+- 메인화면
+totalInfected : Int
+totalInfectedInc : Int
+liveInfected : Int
+liveInfectedInc : Int
+- 메인화면 + 대분류 지역 상세화면
+bigCity : Map<Int, String>
+bcTotalInfected : Int
+bcTotalInfectedInc : Int
+bcLiveInfected : Int
+bcLiveInfectedInc : Int
+- 대분류 지역 상세화면
+smallCity : Map<Int, String>
+scTotalInfected : Int
+scTotalInfectedInc : Int
+scLiveInfected : Int
+scLiveInfectedInc : Int
+- 소분류 지역 상세화면
+todayAnnounced : Int
+checkingDate : Int
+yInfected : Int
+tInfected : Int
+announcedTime : 시간 라이브러리
+scInfectedPlus : Int
+messageInfo : String
