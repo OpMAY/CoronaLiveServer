@@ -1,19 +1,23 @@
 package com.application.coronaliveserver
 
+import com.application.coronaliveserver.tool.AnalyzeMethod
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 
 
-class Crolling {
+class Crolling(
 
+) {
+
+    private val analyzeMethod: AnalyzeMethod = AnalyzeMethod()
     fun navigate() {
         setProperty() // Set driver System path property
         val driver: WebDriver = ChromeDriver()
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
         val startPage = 1 // Start Page
-        val count = 1 // 가져올 글 갯수
+        val count = 10 // 가져올 글 갯수
 
         //URL OPEN
         driver.get(URL)
@@ -53,20 +57,9 @@ class Crolling {
         //WebDriver 프로퍼티 설정
     }
 
-    /*fun script(key : String, value : String){
-        //JavaScript 실행 구문 예시
-        //js.executeScript("window.sessionStorage.setItem($key,$value);")
-        val js = driver as JavascriptExecutor
-        val button = driver.findElement(By.name("btnLogin"))
-        js.executeScript("arguments[0].click();", element)
-        val text = js.executeScript("return arguments[0].innerText", element)
-        js.executeScript("console.log('hello world')")
-    }*/
     fun analyseContext(title: String, text: String) {
         println("제목 : $title")
-        println("내용 : $text\n")
-        TODO("제목, 내용 String 안의 글을 분석할 method")
-        
+        analyzeMethod.analyzeByKeyWord(title, text)
     }
 
     companion object {
