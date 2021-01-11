@@ -10,8 +10,8 @@ import org.openqa.selenium.chrome.ChromeDriver
 class Crolling(
 
 ) {
-
-    private val analyzeMethod: AnalyzeMethod = AnalyzeMethod()
+    lateinit var mtitle : String
+    lateinit var mtext : String
     fun navigate() {
         setProperty() // Set driver System path property
         val driver: WebDriver = ChromeDriver()
@@ -39,9 +39,10 @@ class Crolling(
             //Find Article
             val rePlys = driver.findElement(By.cssSelector("div.boardView")) // 글 content의 위치
             val tList = rePlys.findElements(By.id("sj"))
-            val title = tList[0].text
-            val text = rePlys.findElements(By.id("cn"))[0].text
-            analyseContext(title, text)
+            mtitle = tList[0].text
+            mtext = rePlys.findElements(By.id("cn"))[0].text
+            val analyzeMethod = AnalyzeMethod(mtitle, mtext)
+            analyzeMethod.analyze()
 
 
             //Next Article
@@ -55,11 +56,6 @@ class Crolling(
     private fun setProperty() {
         System.setProperty("webdriver.chrome.driver", "C:/WebDriver/bin/chromedriver.exe")
         //WebDriver 프로퍼티 설정
-    }
-
-    fun analyseContext(title: String, text: String) {
-        println("제목 : $title")
-        analyzeMethod.analyzeByKeyWord(title, text)
     }
 
     companion object {
