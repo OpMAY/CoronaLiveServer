@@ -5,22 +5,28 @@ import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
 
 
 class Crolling(
 
 ) {
-    lateinit var mtitle : String
-    lateinit var mtext : String
+    private lateinit var mtitle : String
+    private lateinit var mtext : String
     fun navigate() {
         setProperty() // Set driver System path property
-        val driver: WebDriver = ChromeDriver()
+        val options = ChromeOptions()
+        options.addArguments("--window-size=1920,1080")
+        options.addArguments("--headless")
+        options.addArguments("--disable-gpu")
+        val driver: WebDriver = ChromeDriver(options)
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
         val startPage = 1 // Start Page
         val count = 10 // 가져올 글 갯수
 
         //URL OPEN
         driver.get(URL)
+
 
         //PAGE SET
         js.executeScript("document.getElementById('bbs_page').value = $startPage;")
