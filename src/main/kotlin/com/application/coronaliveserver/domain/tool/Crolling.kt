@@ -1,7 +1,5 @@
-package com.application.coronaliveserver
+package com.application.coronaliveserver.domain.tool
 
-import com.application.coronaliveserver.common.CoronaLiveException
-import com.application.coronaliveserver.tool.AnalyzeMethod
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.Keys

@@ -1,4 +1,4 @@
-package com.application.coronaliveserver.jpa
+package com.application.coronaliveserver.domain.jpa
 
 import java.util.*
 import javax.persistence.*

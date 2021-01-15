@@ -1,8 +1,8 @@
-package com.application.coronaliveserver.domain.bigcity
+package com.application.coronaliveserver.domain.cityinfo
 
 import com.application.coronaliveserver.common.CoronaLiveException
 
-class relatedSmallCity {
+class RelatedSmallCity {
     fun getRelatedSmallCities(bigCity : String): List<String>{
         when(bigCity){
             SEOUL -> return SMALL_CITY_OF_SEOUL
@@ -22,7 +22,7 @@ class relatedSmallCity {
             JEONLANORTH -> return SMALL_CITY_OF_JEONLANORTH
             GANGWON -> return SMALL_CITY_OF_GANGWON
             SEJONG -> return SMALL_CITY_OF_SEJONG
-            else -> throw CoronaLiveException("올바르지 않은 접근입니다.")
+            else -> throw IllegalStateException("올바르지 않은 접근입니다.")
         }
     }
     companion object{

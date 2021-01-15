@@ -1,4 +1,4 @@
-package com.application.coronaliveserver.tool
+package com.application.coronaliveserver.domain.tool
 
 class AnalyzeMethod(text: String) {
     var isKeywordCorrect : Boolean = false

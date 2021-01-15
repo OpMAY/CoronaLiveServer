@@ -1,6 +1,6 @@
 package com.application.coronaliveserver.domain
 
-import com.application.coronaliveserver.jpa.BaseEntity
+import com.application.coronaliveserver.domain.jpa.BaseEntity
 import javax.persistence.*
 
 @Entity

@@ -1,5 +1,6 @@
 package com.application.coronaliveserver
 
+import com.application.coronaliveserver.domain.tool.Crolling
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
