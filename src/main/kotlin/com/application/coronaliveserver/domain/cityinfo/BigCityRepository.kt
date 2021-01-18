@@ -6,11 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface BigCityRepository : JpaRepository<BigCity, Long>{
-    fun findByCityNameLessThanOrderByIdDesc(
-            cityName : String, pageable :Pageable
-    ) : List<BigCity>
 
-    fun findByCityNameGreaterThanOrderByIdDesc(
-            cityName: String, pageable: Pageable
-    ) : List<BigCity>
 }

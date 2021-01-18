@@ -3,8 +3,8 @@ package com.application.coronaliveserver.domain.cityinfo
 import com.application.coronaliveserver.common.CoronaLiveException
 
 class RelatedSmallCity {
-    fun getRelatedSmallCities(bigCity : String): List<String>{
-        when(bigCity){
+    fun getRelatedSmallCities(bigCity: Long): List<String> {
+        when (bigCity) {
             SEOUL -> return SMALL_CITY_OF_SEOUL
             DAEJEON -> return SMALL_CITY_OF_DAEJEON
             DAEGU -> return SMALL_CITY_OF_DAEGU
@@ -25,29 +25,31 @@ class RelatedSmallCity {
             else -> throw IllegalStateException("올바르지 않은 접근입니다.")
         }
     }
-    companion object{
+
+    companion object {
         //BIG CITY NAMED
-        const val SEOUL = "서울특별시"
-        const val DAEJEON = "대전광역시"
-        const val DAEGU = "대구광역시"
-        const val BUSAN = "부산광역시"
-        const val ULSAN = "울산광역시"
-        const val INCHEON = "인천광역시"
-        const val GWANGJU = "광주광역시"
-        const val JEJU = "제주도"
-        const val GYEONGI = "경기도"
-        const val CHUNGCHEONGSOUTH = "충청남도"
-        const val CHUNGCHEONGNORTH = "충청북도"
-        const val GYUNGSANGSOUTH = "경상남도"
-        const val GYUNGSANGNORTH = "경상북도"
-        const val JEONLASOUTH = "전라남도"
-        const val JEONLANORTH = "전라북도"
-        const val GANGWON = "강원도"
-        const val SEJONG = "세종시"
+        const val SEOUL: Long = 0 //"서울특별시"
+        const val DAEJEON: Long = 1 //"대전광역시"
+        const val DAEGU: Long = 3 //"대구광역시"
+        const val BUSAN: Long = 5 //"부산광역시"
+        const val ULSAN: Long = 4 //"울산광역시"
+        const val INCHEON: Long = 2 //"인천광역시"
+        const val GWANGJU: Long = 6 //"광주광역시"
+        const val JEJU: Long = 16 //"제주도"
+        const val GYEONGI: Long = 8 //"경기도"
+        const val CHUNGCHEONGSOUTH: Long = 9 //"충청남도"
+        const val CHUNGCHEONGNORTH: Long = 10 //"충청북도"
+        const val GYUNGSANGSOUTH: Long = 12 //"경상남도"
+        const val GYUNGSANGNORTH: Long = 13 //"경상북도"
+        const val JEONLASOUTH: Long = 14 //"전라남도"
+        const val JEONLANORTH: Long = 15 //"전라북도"
+        const val GANGWON: Long = 11 //"강원도"
+        const val SEJONG: Long = 7 //"세종시"
+
         //LIST OF SMALL CITIES CONSIST OF BIG CITY
         val SMALL_CITY_OF_SEOUL = listOf("강남구", "강서구", "송파구", "광진구", "노원구", "강동구", "도봉구", "양천구", "구로구",
                 "영등포구", "마포구", "서대문구", "관악구", "금천구", "서초구", "강북구", "성북구", "중랑구", "중구", "용산구", "동작구",
-                "동대문구", "성동구", "종로구", "은평구" )
+                "동대문구", "성동구", "종로구", "은평구")
         val SMALL_CITY_OF_DAEJEON = listOf("대덕구", "동구", "서구", "유성구", "중구")
         val SMALL_CITY_OF_INCHEON = listOf("강화군", "계양구", "남동구", "동구", "미추홀구", "부평구", "서구", "연수구", "옹진군", "중구")
         val SMALL_CITY_OF_DAEGU = listOf("남구", "달서구", "달성군", "동구", "북구", "서구", "수성구", "중구")
