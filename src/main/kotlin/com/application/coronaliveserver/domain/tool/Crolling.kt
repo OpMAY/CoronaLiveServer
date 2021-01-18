@@ -56,10 +56,11 @@ class Crolling(
             mtext = rePlys.findElements(By.id("cn"))[0].text
             val analyzeMethod = AnalyzeMethod(mtext)
             analyzeMethod.analyze()
-            if (analyzeMethod.isKeywordCorrect)
+            if (analyzeMethod.isKeywordCorrect) {
                 InfectedMessage++
+                println("확진자 문자 갯수 : $InfectedMessage")
+            }
 
-            println("확진자 문자 갯수 : $InfectedMessage")
             //Next Article
             val ulBoard = driver.findElement(By.cssSelector("ul.boardView_listWrap"))
             ulBoard.findElements(By.id("bbs_gubun"))[0].click()

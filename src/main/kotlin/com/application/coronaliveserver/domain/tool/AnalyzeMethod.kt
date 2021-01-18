@@ -11,10 +11,12 @@ class AnalyzeMethod(text: String) {
     )
     fun analyze(){
         analyzeByKeyWord()
-        getLocation()
+        if(isKeywordCorrect) {
+            getLocation()
+        }
     }
     private fun getLocation(){
-        val localSplit = mText.indexOf("-송출지역-")
+        val localSplit = mText.indexOf("-송출지역-")+6
         val locationName = mText.substring(localSplit)
         println(locationName)
         //송출 지역 이후의 글자를 가져오고 싶음, 더 해봐야함
@@ -46,15 +48,15 @@ class AnalyzeMethod(text: String) {
         }
         else if(text.indexOf("번")!= -1)
             hasQuantity = true
-        when(condition){
+        return when(condition){
             ONLY_HAS_NUMBER -> "번"
             ONLY_HAS_QUANTITY -> "명"
             HAS_BOTH -> "둘다"
+            else -> ""
             //regex 이용해 필요한 명/번 앞의 숫자를 가져와야 함
             //regex 외에도 split, Indexof 이후 substring 이용 가능
             //https://all-record.tistory.com/118
         }
-        return ""
     }
 
     data class NumberingCondition(
