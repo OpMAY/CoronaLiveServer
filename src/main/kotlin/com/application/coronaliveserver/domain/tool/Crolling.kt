@@ -28,7 +28,7 @@ class Crolling(
 
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
         val startPage = 1 // Start Page
-        val count = 10 // 가져올 글 갯수
+        val count = 100 // 가져올 글 갯수
 
         //URL OPEN
         driver.get(URL)

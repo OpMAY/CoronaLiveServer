@@ -1,7 +1,5 @@
 package com.application.coronaliveserver.domain.cityinfo
 
-import com.application.coronaliveserver.common.CoronaLiveException
-
 class RelatedSmallCity {
     fun getRelatedSmallCities(bigCity: Long): List<String> {
         when (bigCity) {

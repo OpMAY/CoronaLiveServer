@@ -16,15 +16,15 @@ class AnalyzeMethod(text: String) {
         }
     }
     private fun getLocation(){
-        val localSplit = mText.indexOf("-송출지역-")+6
+        val localSplit = mText.indexOf("-송출지역-") + 6
         val locationName = mText.substring(localSplit)
         println(locationName)
         //송출 지역 이후의 글자를 가져오고 싶음, 더 해봐야함
     }
     private fun analyzeByKeyWord(){
-        if(mText.indexOf("확진")!= -1) {
-            println("내용 : $mText\n")
-            isKeywordCorrect = true
+        if(mText.indexOf("확진")!= -1 && mText.indexOf("발생")!= -1) {
+                println("내용 : $mText\n")
+                isKeywordCorrect = true
         }
     }
     private fun getPeople(){
