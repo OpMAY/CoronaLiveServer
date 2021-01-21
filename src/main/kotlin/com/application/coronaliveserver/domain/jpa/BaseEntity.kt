@@ -13,6 +13,7 @@ abstract class BaseEntity {
     open var createdAt: Date? = null
     open var updatedAt: Date? = null
 
+
     @PrePersist
     fun prePersist(){
         createdAt = Date()

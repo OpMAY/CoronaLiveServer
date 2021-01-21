@@ -1,6 +1,6 @@
 package com.application.coronaliveserver.domain.cityinfo
 
-class BigCityInformationRequest(
+class CityInformationRequest(
         val cityName : String
 ) {
 }

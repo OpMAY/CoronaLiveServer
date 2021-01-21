@@ -5,8 +5,8 @@ import javax.persistence.Entity
 
 @Entity(name = "smallcity")
 class SmallCity(
-        var name : String,
-        var bigCityName : String,
+        var CityName : String,
+        var RelatedBigCity : String,
         var TotalInfected : Int,
         var TotalInfectedInc : Int,
         var LiveInfected : Int,
