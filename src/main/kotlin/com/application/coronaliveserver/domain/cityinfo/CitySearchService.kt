@@ -1,10 +1,11 @@
 package com.application.coronaliveserver.domain.cityinfo
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class CitySearchService @Autowired constructor(
         private val bigCityRepository: BigCityRepository,
-        private val relatedSmallCity: RelatedSmallCity,
         private val smallCityRepository: SmallCityRepository
 ) {
     fun search(
@@ -16,6 +17,7 @@ class CitySearchService @Autowired constructor(
             searchSmallCity(it)
         }
     }
+
 
     private fun searchBigCity(
             cityName: String
@@ -29,8 +31,8 @@ class CitySearchService @Autowired constructor(
         return smallCityRepository.findByCityName(cityName!!)
     }
 
-    fun getSmallCities(bigCity: Long): List<String> = relatedSmallCity.getRelatedSmallCities(bigCity)
 
     fun registerInfo() {
+        bigCityRepository.flush()
     }
 }

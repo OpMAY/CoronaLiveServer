@@ -12,10 +12,10 @@ data class CityInformationResponse(
 )
 
 fun BigCity.toBigCityInformationResponse() = id?.let{
-    val relatedSmallCity = RelatedSmallCity().getRelatedSmallCities(it)
+    val relatedSmallCity = RelatedSmallCity().getRelatedSmallCities(cityName)
     CityInformationResponse(
             it,
-            CityName,
+            cityName,
             TotalInfected,
             TotalInfectedInc,
             LiveInfected,
@@ -28,7 +28,7 @@ fun BigCity.toBigCityInformationResponse() = id?.let{
 fun SmallCity.toSmallCityInformationResponse() = id?.let{
     CityInformationResponse(
             it,
-            CityName,
+            cityName,
             TotalInfected,
             TotalInfectedInc,
             LiveInfected,

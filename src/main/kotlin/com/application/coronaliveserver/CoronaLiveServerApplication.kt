@@ -1,5 +1,7 @@
 package com.application.coronaliveserver
 
+import com.application.coronaliveserver.domain.cityinfo.BigCityRepository
+import com.application.coronaliveserver.domain.cityinfo.CityRepositorySet
 import com.application.coronaliveserver.domain.tool.Crolling
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -13,6 +15,7 @@ fun main() {
 
 	//크롤링 시행
 	val c = Crolling()
-	c.navigate()
+	//c.navigate()
 	//TODO:크롤링 주기 설정
+
 }

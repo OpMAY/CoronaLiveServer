@@ -5,7 +5,7 @@ import javax.persistence.Entity
 
 @Entity(name = "smallcity")
 class SmallCity(
-        var CityName : String,
+        var cityName : String,
         var RelatedBigCity : String,
         var TotalInfected : Int,
         var TotalInfectedInc : Int,
