@@ -5,34 +5,15 @@ import org.springframework.stereotype.Service
 
 @Service
 class CitySearchService @Autowired constructor(
-        private val bigCityRepository: BigCityRepository,
-        private val smallCityRepository: SmallCityRepository
+        private val cityRepository: CityRepository
 ) {
-    fun search(
-            bigCity: String,
-            smallCity: String?
-    ) {
-        searchBigCity(bigCity)
-        smallCity?.let {
-            searchSmallCity(it)
+    fun searchCity(
+            BigCityName: String,
+            SmallCityName: String?
+    ): List<City>? {
+        return when(SmallCityName!=null) {
+            true -> cityRepository.findBySmallCityName(SmallCityName)
+            else -> cityRepository.findByBigCityName(BigCityName)
         }
-    }
-
-
-    private fun searchBigCity(
-            cityName: String
-    ): BigCity? {
-        return bigCityRepository.findByCityName(cityName)
-    }
-
-    private fun searchSmallCity(
-            cityName: String?
-    ): SmallCity? {
-        return smallCityRepository.findByCityName(cityName!!)
-    }
-
-
-    fun registerInfo() {
-        bigCityRepository.flush()
     }
 }
