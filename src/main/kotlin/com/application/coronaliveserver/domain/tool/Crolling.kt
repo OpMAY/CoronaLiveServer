@@ -76,5 +76,6 @@ class Crolling(
 
     companion object {
         const val URL = "https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679"
+        const val dailyCoronaInfectedInfoURL = "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun="
     }
 }
