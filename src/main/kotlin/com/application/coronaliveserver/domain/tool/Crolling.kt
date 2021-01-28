@@ -14,7 +14,27 @@ class Crolling(
 ) {
     private lateinit var mtitle: String
     private lateinit var mtext: String
-    fun navigate() {
+    fun navigateDailyLocalCoronaInfectedInfo(){
+        setProperty()
+
+        // Set selenium chrome options
+        val options = ChromeOptions()
+        options.addArguments("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+        options.addArguments("lang=ko_KR")
+        options.addArguments("--window-size=1920,1080")
+        options.addArguments("--headless")
+        options.addArguments("--disable-gpu")
+        val driver: WebDriver = ChromeDriver(options)
+
+        val js = driver as JavascriptExecutor // Execute JavaScript from driver
+
+        driver.get(dailyCoronaInfectedInfoURL)
+        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+
+        driver.findElement(By.tagName("status_con s_type1"))
+
+    }
+    fun navigateLiveMessage() {
         setProperty() // Set driver System path property
 
         // Set selenium chrome options
@@ -31,7 +51,7 @@ class Crolling(
         val count = 100 // 가져올 글 갯수
 
         //URL OPEN
-        driver.get(URL)
+        driver.get(liveAlertMessageURL)
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
 
         //PAGE SET
@@ -46,7 +66,6 @@ class Crolling(
         //CLICK POST
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
         driver.findElements(By.id("bbs_tr_0_bbs_title"))[0].sendKeys(Keys.ENTER)
-        val errorCount = 0
         var InfectedMessage: Int = 0
         for (i in 1..count) {
             //Find Article
@@ -65,8 +84,8 @@ class Crolling(
             val ulBoard = driver.findElement(By.cssSelector("ul.boardView_listWrap"))
             ulBoard.findElements(By.id("bbs_gubun"))[0].click()
         }
-
-
+        //Stop Crolling Driver
+        driver.quit()
     }
 
     private fun setProperty() {
@@ -75,7 +94,7 @@ class Crolling(
     }
 
     companion object {
-        const val URL = "https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679"
+        const val liveAlertMessageURL = "https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679"
         const val dailyCoronaInfectedInfoURL = "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun="
     }
 }
