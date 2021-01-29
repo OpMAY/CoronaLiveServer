@@ -14,37 +14,66 @@ class Crolling(
 ) {
     private lateinit var mtitle: String
     private lateinit var mtext: String
-    fun navigateDailyLocalCoronaInfectedInfo(){
+    //거리두기 단계 정보
+    fun navigateLocalAlertPhaseInfo(){
+        // Set driver System path property
         setProperty()
-
         // Set selenium chrome options
-        val options = ChromeOptions()
-        options.addArguments("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-        options.addArguments("lang=ko_KR")
-        options.addArguments("--window-size=1920,1080")
-        options.addArguments("--headless")
-        options.addArguments("--disable-gpu")
-        val driver: WebDriver = ChromeDriver(options)
+        val driver = driverSet()
 
-        val js = driver as JavascriptExecutor // Execute JavaScript from driver
+        driver.get(localAlertPhaseInfoURL)
+        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+
+        val timetable = driver.findElement(By.className("info")).text
+        println(timetable)
+
+        for (i in 0..1) {
+            val getKoreaAlertPhase = driver.findElements(By.className("rssd_title_2"))[i].text
+            println(getKoreaAlertPhase)
+
+            val getKoreaAlertPhaseSpecific = driver.findElements(By.className("rssd_descript"))[i].text
+            println(getKoreaAlertPhaseSpecific)
+        }
+        for(i in 1..17){
+            val k = i+1
+            driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[1]/div[2]/div/button[$i]")).sendKeys(Keys.ENTER)
+            val title1 = driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/h3")).text
+            val title2 = driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/h4")).text
+            val p = driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/p")).text
+            println(title1)
+            println(title2)
+            println(p)
+
+            driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+        }
+
+        driver.quit()
+
+    }
+    //당일 확진자 정보
+    fun navigateDailyLocalCoronaInfectedInfo(){
+        // Set driver System path property
+        setProperty()
+        // Set selenium chrome options
+        val driver = driverSet()
 
         driver.get(dailyCoronaInfectedInfoURL)
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
 
-        driver.findElement(By.tagName("status_con s_type1"))
+        for(i in 2..19){
+            val locationName = driver.findElements(By.xpath("//table/tbody/tr[$i]/th"))
+            val localInfectedNum = driver.findElements(By.xpath("//table/tbody/tr[$i]/td"))
+            println(locationName[0].text + " 확진환자 수 : " + localInfectedNum[3].text)
+        }
+        driver.quit()
 
     }
+    //재난문자 정보
     fun navigateLiveMessage() {
-        setProperty() // Set driver System path property
-
+        // Set driver System path property
+        setProperty()
         // Set selenium chrome options
-        val options = ChromeOptions()
-        options.addArguments("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-        options.addArguments("lang=ko_KR")
-        options.addArguments("--window-size=1920,1080")
-        options.addArguments("--headless")
-        options.addArguments("--disable-gpu")
-        val driver: WebDriver = ChromeDriver(options)
+        val driver = driverSet()
 
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
         val startPage = 1 // Start Page
@@ -88,6 +117,19 @@ class Crolling(
         driver.quit()
     }
 
+    private fun driverSet() : WebDriver{
+        setProperty()
+
+        // Set selenium chrome options
+        val options = ChromeOptions()
+        options.addArguments("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+        options.addArguments("lang=ko_KR")
+        options.addArguments("--window-size=1920,1080")
+        options.addArguments("--headless")
+        options.addArguments("--disable-gpu")
+        return ChromeDriver(options)
+    }
+
     private fun setProperty() {
         System.setProperty("webdriver.chrome.driver", "C:/WebDriver/bin/chromedriver.exe")
         //WebDriver 프로퍼티 설정
@@ -96,5 +138,6 @@ class Crolling(
     companion object {
         const val liveAlertMessageURL = "https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679"
         const val dailyCoronaInfectedInfoURL = "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun="
+        const val localAlertPhaseInfoURL = "http://ncov.mohw.go.kr/regSocdisBoardView.do?brdId=6&brdGubun=68&ncvContSeq=495"
     }
 }

@@ -14,6 +14,8 @@ fun main() {
 	//크롤링 시행
 	val c = Crolling()
 	//c.navigate()
+	//c.navigateDailyLocalCoronaInfectedInfo()
+	//c.navigateLocalAlertPhaseInfo()
 	//TODO:크롤링 주기 설정
 
 }
