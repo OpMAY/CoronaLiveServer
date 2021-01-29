@@ -8,12 +8,11 @@ class CitySearchService @Autowired constructor(
         private val cityRepository: CityRepository
 ) {
     fun searchCity(
-            BigCityName: String,
-            SmallCityName: String?
+            request: CityInformationRequest
     ): List<City>? {
-        return when(SmallCityName!=null) {
-            true -> cityRepository.findBySmallCityName(SmallCityName)
-            else -> cityRepository.findByBigCityName(BigCityName)
+        return when(request.smallCityName!=null) {
+            true -> cityRepository.findBySmallCityName(request.smallCityName)
+            else -> cityRepository.findByBigCityName(request.bigCityName)
         }
     }
 }

@@ -34,6 +34,9 @@ class CityRepositorySet @Autowired constructor(
         dbSetting(RelatedSmallCity.GANGWON)
         dbSetting(RelatedSmallCity.JEJU)
     }
+    fun update(){
+
+    }
     private fun dbSetting(mainCity : String){
         city.toCity(null,mainCity).run(::saveBigCity)
         for(element in getSmallCities(mainCity)) {

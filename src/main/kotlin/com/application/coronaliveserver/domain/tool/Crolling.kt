@@ -1,5 +1,6 @@
 package com.application.coronaliveserver.domain.tool
 
+import com.application.coronaliveserver.domain.cityinfo.CityRepositorySet
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.Keys
@@ -64,6 +65,7 @@ class Crolling(
             val locationName = driver.findElements(By.xpath("//table/tbody/tr[$i]/th"))
             val localInfectedNum = driver.findElements(By.xpath("//table/tbody/tr[$i]/td"))
             println(locationName[0].text + " 확진환자 수 : " + localInfectedNum[3].text)
+
         }
         driver.quit()
 
@@ -118,8 +120,6 @@ class Crolling(
     }
 
     private fun driverSet() : WebDriver{
-        setProperty()
-
         // Set selenium chrome options
         val options = ChromeOptions()
         options.addArguments("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
