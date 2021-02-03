@@ -33,7 +33,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
 	implementation("org.jetbrains.kotlin:kotlin-reflect")//리플렉션기능
-
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 	runtimeOnly("mysql:mysql-connector-java")
 	implementation("org.seleniumhq.selenium:selenium-chrome-driver")
 	implementation("org.seleniumhq.selenium:selenium-server:3.9.1")

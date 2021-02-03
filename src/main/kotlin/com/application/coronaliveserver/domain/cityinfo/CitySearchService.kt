@@ -10,9 +10,14 @@ class CitySearchService @Autowired constructor(
     fun searchCity(
             request: CityInformationRequest
     ): List<City>? {
-        return when(request.smallCityName!=null) {
-            true -> cityRepository.findBySmallCityName(request.smallCityName)
-            else -> cityRepository.findByBigCityName(request.bigCityName)
-        }
+        return cityRepository.findByBigCityNameAndSmallCityName(request.bigCityName, request.smallCityName)
+    }
+
+    fun showAllCities() : List<City>{
+        return cityRepository.findAll()
+    }
+
+    fun showBigCities() : List<City>?{
+        return cityRepository.findBySmallCityName(null)
     }
 }

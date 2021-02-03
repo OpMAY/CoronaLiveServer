@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CityRepository : JpaRepository<City, Long>{
 
-    fun findByBigCityName(name : String): List<City>?
+    fun findByBigCityName(bigCityName : String): List<City>?
 
-    fun findBySmallCityName(name : String?):List<City>?
+    fun findBySmallCityName(smallCityName : String?): List<City>?
+
+    fun findByBigCityNameAndSmallCityName(bigCityName: String, smallCityName: String?) : List<City>?
+
 }

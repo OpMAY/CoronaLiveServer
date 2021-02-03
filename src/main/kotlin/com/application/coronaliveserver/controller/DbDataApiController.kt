@@ -21,6 +21,6 @@ class DbDataApiController @Autowired constructor(
     ) = dbService
             .search(locationId,limit ?: 10)
 
-    @GetMapping("/set_data")
-    fun register() = cityRepositorySet.register()
+    @GetMapping("/update_data")
+    fun update() = cityRepositorySet.update()
 }

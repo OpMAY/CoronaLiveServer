@@ -21,4 +21,16 @@ class CityApiController @Autowired constructor(
             .searchCity(request)
             ?.mapNotNull(City::toCityInformationResponse)
             .let { ApiResponse.ok(it) }
+
+    @GetMapping("/all_cities")
+    fun showList() = citySearchService
+            .showAllCities()
+            .map(City::toCityInformationResponse)
+            .let { ApiResponse.ok(it) }
+
+    @GetMapping("/big_cities")
+    fun showBigCityList() = citySearchService
+            .showBigCities()
+            ?.map(City::toCityInformationResponse)
+            .let { ApiResponse.ok(it) }
 }

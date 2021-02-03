@@ -15,6 +15,7 @@ class Crolling(
 ) {
     private lateinit var mtitle: String
     private lateinit var mtext: String
+    var dailyTotalInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
     //거리두기 단계 정보
     fun navigateLocalAlertPhaseInfo(){
         // Set driver System path property
@@ -47,7 +48,7 @@ class Crolling(
 
             driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
         }
-
+        //Stop Crolling Driver
         driver.quit()
 
     }
@@ -64,9 +65,12 @@ class Crolling(
         for(i in 2..19){
             val locationName = driver.findElements(By.xpath("//table/tbody/tr[$i]/th"))
             val localInfectedNum = driver.findElements(By.xpath("//table/tbody/tr[$i]/td"))
+            val num = localInfectedNum[3].text.replace(",", "").toInt()
             println(locationName[0].text + " 확진환자 수 : " + localInfectedNum[3].text)
+            dailyTotalInfectedKorea[locationName[0].text] = num
 
         }
+        //Stop Crolling Driver
         driver.quit()
 
     }
@@ -116,6 +120,14 @@ class Crolling(
             ulBoard.findElements(By.id("bbs_gubun"))[0].click()
         }
         //Stop Crolling Driver
+        driver.quit()
+    }
+
+    fun autoUpdate(){
+        setProperty()
+        val driver = driverSet()
+
+        driver.get("http://localhost:8080/api/v1/update_data")
         driver.quit()
     }
 
