@@ -1,4 +1,4 @@
-package com.application.coronaliveserver.domain
+package com.application.coronaliveserver.domain.dummy
 
 import com.application.coronaliveserver.domain.jpa.BaseEntity
 import javax.persistence.*

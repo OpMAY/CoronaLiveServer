@@ -1,4 +1,4 @@
-package com.application.coronaliveserver.domain
+package com.application.coronaliveserver.domain.dummy
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest

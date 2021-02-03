@@ -1,4 +1,4 @@
-package com.application.coronaliveserver.domain
+package com.application.coronaliveserver.domain.dummy
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

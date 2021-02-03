@@ -83,7 +83,7 @@ class Crolling(
 
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
         val startPage = 1 // Start Page
-        val count = 100 // 가져올 글 갯수
+        val count = 2 // 가져올 글 갯수
 
         //URL OPEN
         driver.get(liveAlertMessageURL)
@@ -126,7 +126,7 @@ class Crolling(
     fun autoUpdate(){
         setProperty()
         val driver = driverSet()
-
+        // Server Update Link
         driver.get("http://localhost:8080/api/v1/update_data")
         driver.quit()
     }
