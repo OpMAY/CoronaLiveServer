@@ -12,5 +12,5 @@ class DbDataApiController @Autowired constructor(
         private val cityRepositorySet: CityRepositorySet
 ){
     @GetMapping("/update_data")
-    fun update() = cityRepositorySet.update()
+    fun update() = cityRepositorySet.dailyUpdate()
 }

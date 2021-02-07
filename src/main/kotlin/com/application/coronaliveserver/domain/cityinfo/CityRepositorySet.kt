@@ -29,7 +29,7 @@ class CityRepositorySet @Autowired constructor(
     )
     val crolling = Crolling()
 
-    fun update(){
+    fun dailyUpdate(){
         crolling.navigateDailyLocalCoronaInfectedInfo()
         for(key in list.keys) {
             println(crolling.dailyTotalInfectedKorea[key])

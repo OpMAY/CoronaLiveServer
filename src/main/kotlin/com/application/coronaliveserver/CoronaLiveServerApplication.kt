@@ -1,6 +1,9 @@
 package com.application.coronaliveserver
 
 import com.application.coronaliveserver.domain.tool.Crolling
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import java.util.*
@@ -13,11 +16,19 @@ fun main() {
     //서버 구동
     runApplication<CoronaLiveServerApplication>()
 
+    val c = Crolling()
+    c.navigateLocalAlertPhaseInfo()
+    /*runBlocking {
+        val todayUpdate = launch {
+            dailyUpdate(9,0)
+        }
+        todayUpdate.join()
+    }*/
     //크롤링 시행
     //getMessage()
     //TODO 60초 간격으로 재난문자 크롤링 시행할 수 있게 작성은 했음, 재난문자 분류 작업 로직이 필요
     //주기 시행
-    dailyUpdate(9,0)
+
 
 
 }

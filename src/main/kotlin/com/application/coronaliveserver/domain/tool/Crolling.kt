@@ -1,6 +1,5 @@
 package com.application.coronaliveserver.domain.tool
 
-import com.application.coronaliveserver.domain.cityinfo.CityRepositorySet
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.Keys
@@ -9,13 +8,11 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import java.util.concurrent.TimeUnit
 
-
-class Crolling(
-
-) {
+class Crolling {
     private lateinit var mtitle: String
     private lateinit var mtext: String
     var dailyTotalInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
+    var dailyCoronaPhaseInfo : MutableMap<String, String> = mutableMapOf("" to "")
     //거리두기 단계 정보
     fun navigateLocalAlertPhaseInfo(){
         // Set driver System path property
@@ -101,7 +98,7 @@ class Crolling(
         //CLICK POST
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
         driver.findElements(By.id("bbs_tr_0_bbs_title"))[0].sendKeys(Keys.ENTER)
-        var InfectedMessage: Int = 0
+        var infectedMessage = 0
         for (i in 1..count) {
             //Find Article
             val rePlys = driver.findElement(By.cssSelector("div.boardView")) // 글 content의 위치
@@ -111,8 +108,8 @@ class Crolling(
             val analyzeMethod = AnalyzeMethod(mtext)
             analyzeMethod.analyze()
             if (analyzeMethod.isKeywordCorrect) {
-                InfectedMessage++
-                println("확진자 문자 갯수 : $InfectedMessage")
+                infectedMessage++
+                println("확진자 문자 갯수 : $infectedMessage")
             }
 
             //Next Article
