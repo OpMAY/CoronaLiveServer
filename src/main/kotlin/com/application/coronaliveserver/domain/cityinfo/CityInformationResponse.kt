@@ -6,7 +6,7 @@ data class CityInformationResponse(
         val TotalInfected: Int,
         val TotalInfectedInc: Int,
         val LiveInfected: Int,
-        val LiveInfectedInc: Int,
+        val LiveInfectedInc: Int
 )
 
 fun City.toCityInformationResponse() = id?.let{
