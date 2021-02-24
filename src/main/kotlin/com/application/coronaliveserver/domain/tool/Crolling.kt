@@ -12,6 +12,7 @@ class Crolling {
     private lateinit var mtitle: String
     private lateinit var mtext: String
     var dailyTotalInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
+    var dailyTotalIncreasedInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
     var dailyCoronaPhaseInfo : MutableMap<String, String> = mutableMapOf("" to "")
     //거리두기 단계 정보
     fun navigateLocalAlertPhaseInfo(){
@@ -59,12 +60,16 @@ class Crolling {
         driver.get(dailyCoronaInfectedInfoURL)
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
 
-        for(i in 2..19){
+
+        for(i in 1..19){
             val locationName = driver.findElements(By.xpath("//table/tbody/tr[$i]/th"))
             val localInfectedNum = driver.findElements(By.xpath("//table/tbody/tr[$i]/td"))
-            val num = localInfectedNum[3].text.replace(",", "").toInt()
+            val increasedNum = localInfectedNum[0].text.replace(",", "").toInt()
+            val totalNum = localInfectedNum[3].text.replace(",", "").toInt()
             println(locationName[0].text + " 확진환자 수 : " + localInfectedNum[3].text)
-            dailyTotalInfectedKorea[locationName[0].text] = num
+            println(locationName[0].text + " 증가량 : " + increasedNum.toString())
+            dailyTotalInfectedKorea[locationName[0].text] = totalNum
+            dailyTotalIncreasedInfectedKorea[locationName[0].text] = increasedNum
 
         }
         //Stop Crolling Driver

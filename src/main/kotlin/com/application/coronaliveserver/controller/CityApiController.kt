@@ -14,7 +14,7 @@ class CityApiController @Autowired constructor(
         private val citySearchService: CitySearchService
 ){
 
-    @GetMapping("/cities")
+    @PostMapping("/cities")
     fun search(
             @RequestBody request : CityInformationRequest
     ) = citySearchService

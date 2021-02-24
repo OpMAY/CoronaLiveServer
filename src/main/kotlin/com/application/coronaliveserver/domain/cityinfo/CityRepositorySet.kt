@@ -17,7 +17,7 @@ class CityRepositorySet @Autowired constructor(
             "충북" to "충청북도", "충남" to "충청남도", "경북" to "경상북도",
             "경남" to "경상남도", "대구" to "대구광역시", "전북" to "전라북도",
             "전남" to "전라남도", "광주" to "광주광역시", "부산" to "부산광역시",
-            "울산" to "울산광역시", "제주" to "제주도", "검역" to "검역"
+            "울산" to "울산광역시", "제주" to "제주도", "검역" to "검역", "합계" to "전체"
     )
     private val city = City(
             "",
@@ -34,13 +34,14 @@ class CityRepositorySet @Autowired constructor(
         for(key in list.keys) {
             println(crolling.dailyTotalInfectedKorea[key])
             val number = crolling.dailyTotalInfectedKorea[key] ?: error("지역 확진자 숫자 오류")
+            increasedNum = crolling.dailyTotalIncreasedInfectedKorea[key] ?: error("지역 확진자 증가량 숫자 오류")
             val localFullName = list[key] ?: error("지역 이름 오류")
             cityRepository.findByBigCityName(localFullName)?.let {
                 for (element in it) {
                     if (element.smallCityName == null || element.smallCityName == localFullName) {
-                        element.LiveInfected = element.LiveInfected.plus(number)
-                        element.LiveInfectedInc = increasedNum
-                        element.TotalInfected = element.TotalInfected.plus(number)
+                        element.LiveInfected = 0
+                        element.LiveInfectedInc = 0
+                        element.TotalInfected = number
                         element.TotalInfectedInc = increasedNum
                         cityRepository.save(element)
                     }
@@ -49,11 +50,9 @@ class CityRepositorySet @Autowired constructor(
         }
 
     }
-    private fun dbSetting(mainCity : String){
-        city.toCity(null,mainCity).run(::saveBigCity)
-        for(element in getSmallCities(mainCity)) {
-            city.toCity(element, mainCity).run(::saveBigCity)
-        }
+    fun dbSetting(){
+        city.toCity(null,"검역").run(::saveBigCity)
+        city.toCity(null, "전체").run(::saveBigCity)
     }
     private fun saveBigCity(City: City) = cityRepository.save(City)
 

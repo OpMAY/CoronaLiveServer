@@ -13,4 +13,7 @@ class DbDataApiController @Autowired constructor(
 ){
     @GetMapping("/update_data")
     fun update() = cityRepositorySet.dailyUpdate()
+
+    @GetMapping("/db_update")
+    fun dbUpdate() = cityRepositorySet.dbSetting()
 }

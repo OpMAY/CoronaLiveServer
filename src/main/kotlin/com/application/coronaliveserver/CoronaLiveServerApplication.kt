@@ -17,7 +17,7 @@ fun main() {
     runApplication<CoronaLiveServerApplication>()
 
     val c = Crolling()
-    c.navigateLocalAlertPhaseInfo()
+    //c.navigateLocalAlertPhaseInfo()
     /*runBlocking {
         val todayUpdate = launch {
             dailyUpdate(9,0)
