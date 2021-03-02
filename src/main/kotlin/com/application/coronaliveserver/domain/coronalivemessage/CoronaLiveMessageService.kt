@@ -1,4 +1,4 @@
-package com.application.coronaliveserver.domain.dummy
+package com.application.coronaliveserver.domain.coronalivemessage
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -6,13 +6,13 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class dbService @Autowired constructor(
-        private val dbDataTableRepository: dbDataTableRepository
+class CoronaLiveMessageService @Autowired constructor(
+        private val CoronaAlertMessageRepository: CoronaAlertMessageRepository
 ) {
     fun search(
             LocationId : Int?,
             limit : Int
-    ):List<dbDataTable> {
+    ):List<CoronaAlertMessage> {
         val pageable = PageRequest.of(0, limit)
         val condition = PlaceSearchCondition(
                 LocationId == null,
@@ -35,5 +35,5 @@ class dbService @Autowired constructor(
         val PLACE_SELECTED = PlaceSearchCondition(true, 0)
     }
 
-    fun get(id: Long) = dbDataTableRepository.findByIdOrNull(id)
+    fun get(id: Long) = CoronaAlertMessageRepository.findByIdOrNull(id)
 }

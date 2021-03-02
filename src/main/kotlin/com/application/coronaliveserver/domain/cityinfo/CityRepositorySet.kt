@@ -3,6 +3,7 @@ package com.application.coronaliveserver.domain.cityinfo
 import com.application.coronaliveserver.domain.tool.Crolling
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class CityRepositorySet @Autowired constructor(
@@ -57,6 +58,7 @@ class CityRepositorySet @Autowired constructor(
     private fun saveBigCity(City: City) = cityRepository.save(City)
 
     fun getSmallCities(bigCity: String): List<String> = relatedSmallCity.getRelatedSmallCities(bigCity)
+
 
     //TODO : 크롤링으로 받아온 지역 감염 정보 구분하여 확진자수 누적 추가
 }

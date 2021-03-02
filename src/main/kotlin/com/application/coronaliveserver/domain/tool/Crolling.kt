@@ -1,5 +1,11 @@
 package com.application.coronaliveserver.domain.tool
 
+import com.application.coronaliveserver.domain.smalldata.SEDService
+import com.application.coronaliveserver.domain.smalldata.SmallEssentialData
+import com.application.coronaliveserver.domain.smalldata.SmallEssentialDataRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.Keys
@@ -14,6 +20,8 @@ class Crolling {
     var dailyTotalInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
     var dailyTotalIncreasedInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
     var dailyCoronaPhaseInfo : MutableMap<String, String> = mutableMapOf("" to "")
+    var pNum : Int = 0
+    var alertMessage : MutableMap<Int, String> = mutableMapOf(0 to "")
     //거리두기 단계 정보
     fun navigateLocalAlertPhaseInfo(){
         // Set driver System path property
@@ -97,8 +105,10 @@ class Crolling {
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
 
         //글의 번호 가져오기
-        val pNum = driver.findElement(By.id("bbs_tr_0_num_td"))
-        println(pNum.text)
+        pNum = driver.findElement(By.id("bbs_tr_0_num_td")).text.toInt()
+        GlobalScope.launch(Dispatchers.Default) {
+            
+        }
 
         //CLICK POST
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
