@@ -12,33 +12,14 @@ class AnalyzeMethod(text: String) {
             hasNumber,
             hasQuantity
     )
-    var testFile = File("./temporaryFile.txt") //임시저장소역할(이후 웹페이지나 대체예정)
+    var testFile = File("temporaryFile.txt") //임시저장소역할(이후 웹페이지나 대체예정)
+    var autoFile = File("autoFile.txt") //자동 처리되는 내용
 
-    val inputStream: InputStream = testFile.inputStream()
-    val isr: InputStreamReader = inputStream.reader()
-    val outputStream: OutputStream = testFile.outputStream()
-    val osw: OutputStreamWriter = outputStream.writer()
 
-    fun fileWrite(){
-        if (!testFile.exists())
-            testFile.createNewFile()
-
-      //  val outputStream: OutputStream = testFile.outputStream()
-        //outputStream.write(35)
-
-     //   val osw: OutputStreamWriter = outputStream.writer()
-        //osw.write("파일입출력")
-        //osw.close()
-
-     //   val inputStream: InputStream = testFile.inputStream()
-        //println(inputStream.read())
-
-      //  val isr: InputStreamReader = inputStream.reader()
-       // println(isr.readText())
-        //isr.close()
-    }//파일 입출력 관련 기본 형태, 외우질 못해서 써놓음
     fun analyze(){
+
         firstFilter()
+
         if(isKeywordCorrect) {
             getLocation()
             analyzePrep()
@@ -48,7 +29,7 @@ class AnalyzeMethod(text: String) {
         val localSplit = mText.indexOf("-송출지역-") + 6
         val locationName = mText.substring(localSplit)
         println(locationName)
-        osw.write("$locationName")
+        testFile.appendText("$locationName")
         //송출 지역 이후의 글자를 가져오고 싶음, 더 해봐야함
     }
     private fun firstFilter(){
@@ -56,14 +37,15 @@ class AnalyzeMethod(text: String) {
         {
             isKeywordCorrect = true
             println("내용 : $mText\n")//프린트로 해놓았지만 1차적 관리장소로 전송 혹은 일단저장
-            osw.write("내용 : $mText\n")
-            TODO("if temporary space is avaliable send it, or save in DB for second evaluation")
+            testFile.appendText("내용 : $mText\n")
+            //"if temporary space is avaliable send it, or save in DB for second evaluation")
         }
     }
     private fun analyzePrep(){
         if(mText.indexOf("확진자")!= -1 && mText.indexOf("발생")!= -1) {
-            TODO("analyze text into official count by auto")
+            //"analyze text into official count by auto")
             isKeywordAuto = true
+            autoFile.appendText("내용 : $mText\n")
 
     }
     }
