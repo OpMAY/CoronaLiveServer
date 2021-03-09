@@ -15,8 +15,9 @@ class AnalyzeMethod(text: String) {
     var testFile = File("temporaryFile.txt") //임시저장소역할(이후 웹페이지나 대체예정)
     var autoFile = File("autoFile.txt") //자동 처리되는 내용
     var trashFile = File("trashFile.txt")
-    var finalCount = 0
+    var finalCount = text
     var numberIndex = 0
+
 
 
     fun analyze(){
@@ -27,12 +28,15 @@ class AnalyzeMethod(text: String) {
             getLocation()
             analyzePrep()
         }
+        if(isKeywordAuto){
+            countFromNumber()
+        }
     }
     private fun getLocation(){
         val localSplit = mText.indexOf("-송출지역-") + 6
-        val locationName = mText.substring(localSplit)
+        val locationName = mText.substring(localSplit).replace(" ", "")
         println(locationName)
-        testFile.appendText("$locationName")
+        autoFile.appendText("$locationName\n")
         //송출 지역 이후의 글자를 가져오고 싶음, 더 해봐야함
     }
     private fun firstFilter(){
@@ -48,19 +52,25 @@ class AnalyzeMethod(text: String) {
     }
     private fun analyzePrep(){
         if(mText.indexOf("확진자")!= -1 && mText.indexOf("발생")!= -1) {
+            hasNumberAndQuantity(mText)
             //"analyze text into official count by auto")
             isKeywordAuto = true
-            autoFile.appendText("내용 : $mText\n")
+
 
     }
     }// 확진과 발생이 포함될 경우 프린트하고 iskeywordcorrect값 참으로 반환
-    private fun countFromNumber(text: String) : String{
+    private fun countFromNumber(){
         when(hasNumber){
             true -> {
+                autoFile.appendText("내용 : $mText\n") //원형 저장
+                getLocation()
                 //변형전 원형형태 split과 저장 필요
-                text.toRegex().replace(" ", "")
-                println("$text") //제대로 대체되었는지 확인
-                numberIndex = text.indexOf("명") -1
+                mText.toRegex().replace(" ", "")
+                println("$mText") //제대로 대체되었는지 확인용
+                numberIndex = mText.indexOf("명") -1
+                finalCount = mText.substring(numberIndex, numberIndex+1)
+                autoFile.appendText(" $finalCount 명만큼 증가 \n")
+
             }
         }
 
