@@ -15,7 +15,8 @@ class AnalyzeMethod(text: String) {
     var testFile = File("temporaryFile.txt") //임시저장소역할(이후 웹페이지나 대체예정)
     var autoFile = File("autoFile.txt") //자동 처리되는 내용
     var trashFile = File("trashFile.txt")
-    var finalcount = 0
+    var finalCount = 0
+    var numberIndex = 0
 
 
     fun analyze(){
@@ -56,9 +57,10 @@ class AnalyzeMethod(text: String) {
     private fun countFromNumber(text: String) : String{
         when(hasNumber){
             true -> {
+                //변형전 원형형태 split과 저장 필요
                 text.toRegex().replace(" ", "")
-                println("$text")
-                text.indexOf("명")
+                println("$text") //제대로 대체되었는지 확인
+                numberIndex = text.indexOf("명") -1
             }
         }
 
@@ -86,12 +88,12 @@ class AnalyzeMethod(text: String) {
         //이부분을 analyzeprep에 넣으면 됨
     }
     private fun hasNumberAndQuantity(text : String) : String{
-        if(text.indexOf("명")!= -1){
+        if(text.contains("명")){
             hasNumber = true
-            if(text.indexOf("번")!= -1)
+            if(text.contains("번"))
                 hasQuantity = true
         }
-        else if(text.indexOf("번")!= -1)
+        else if(text.contains("번"))
             hasQuantity = true
         return when(condition){
             ONLY_HAS_NUMBER -> "번"
