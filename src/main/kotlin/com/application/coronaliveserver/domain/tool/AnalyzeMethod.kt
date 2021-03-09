@@ -14,6 +14,8 @@ class AnalyzeMethod(text: String) {
     )
     var testFile = File("temporaryFile.txt") //임시저장소역할(이후 웹페이지나 대체예정)
     var autoFile = File("autoFile.txt") //자동 처리되는 내용
+    var trashFile = File("trashFile.txt")
+    var finalcount = 0
 
 
     fun analyze(){
@@ -40,6 +42,8 @@ class AnalyzeMethod(text: String) {
             testFile.appendText("내용 : $mText\n")
             //"if temporary space is avaliable send it, or save in DB for second evaluation")
         }
+        else //1차필터링 이후의 문자들 존재
+            trashFile.appendText("$mText\n")
     }
     private fun analyzePrep(){
         if(mText.indexOf("확진자")!= -1 && mText.indexOf("발생")!= -1) {
@@ -48,13 +52,19 @@ class AnalyzeMethod(text: String) {
             autoFile.appendText("내용 : $mText\n")
 
     }
-    }
-    private fun analyzeByKeyWord(){
-        if(mText.indexOf("확진")!= -1 && mText.indexOf("발생")!= -1) {
-                //println("내용 : $mText\n")
-                isKeywordCorrect = true
-        }
     }// 확진과 발생이 포함될 경우 프린트하고 iskeywordcorrect값 참으로 반환
+    private fun countFromNumber(text: String) : String{
+        when(hasNumber){
+            true -> {
+                text.toRegex().replace(" ", "")
+                println("$text")
+                text.indexOf("명")
+            }
+        }
+
+
+    }
+
     private fun getPeople(){
         TODO("make algorithm to get number of people from context")
         // 경우의 수
@@ -69,7 +79,9 @@ class AnalyzeMethod(text: String) {
         // 2-2-1. 범위식 ( 100번 ~ 102번 )
         // 2-2-2. 범위식 ( 1017 ~ 1019번)
         // 2-3. m번째 확진자 발생 (k번째 확진자의 접촉자)
+        // !!2-4!!. x번 코로나19 확진자 발생 (단일 명수인 케이스)
         // 3. 둘 다의 경우
+        // 4. 어제 x명 발생
 
         //이부분을 analyzeprep에 넣으면 됨
     }
