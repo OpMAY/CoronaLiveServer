@@ -14,24 +14,27 @@ class AnalyzeMethod(text: String) {
     )
     var testFile = File("temporaryFile.txt") //임시저장소역할(이후 웹페이지나 대체예정)
     var autoFile = File("autoFile.txt") //자동 처리되는 내용
-    var trashFile = File("trashFile.txt")
+    var trashFile = File("trashFile.txt") //1차필터링에서 버려지는 내용(혹 오류 사항 검수용)
     var finalCount = text
     var numberIndex = 0
+    var quantityCount = 0
 
 
 
     fun analyze(){
-
         firstFilter()
 
         if(isKeywordCorrect) {
-            getLocation()
             analyzePrep()
         }
+
         if(isKeywordAuto){
             countFromNumber()
+            countFromQuantity()
         }
     }
+
+
     private fun getLocation(){
         val localSplit = mText.indexOf("-송출지역-") + 6
         val locationName = mText.substring(localSplit).replace(" ", "")
@@ -39,6 +42,8 @@ class AnalyzeMethod(text: String) {
         autoFile.appendText("$locationName\n")
         //송출 지역 이후의 글자를 가져오고 싶음, 더 해봐야함
     }
+
+
     private fun firstFilter(){
         if(mText.indexOf("확진")!= -1)//확진이라는 단어가 포함되어있다면
         {
@@ -50,31 +55,57 @@ class AnalyzeMethod(text: String) {
         else //1차필터링 이후의 문자들 존재
             trashFile.appendText("$mText\n")
     }
+
+
     private fun analyzePrep(){
         if(mText.indexOf("확진자")!= -1 && mText.indexOf("발생")!= -1) {
-            hasNumberAndQuantity(mText)
-            //"analyze text into official count by auto")
             isKeywordAuto = true
-
-
-    }
+            if (mText.indexOf("어제")!= -1){
+                isKeywordAuto = false
+            }
+            hasNumberAndQuantity(mText)
+        }
     }// 확진과 발생이 포함될 경우 프린트하고 iskeywordcorrect값 참으로 반환
+
+
     private fun countFromNumber(){
         when(hasNumber){
             true -> {
                 autoFile.appendText("내용 : $mText\n") //원형 저장
                 getLocation()
-                //변형전 원형형태 split과 저장 필요
                 mText.toRegex().replace(" ", "")
                 println("$mText") //제대로 대체되었는지 확인용
-                numberIndex = mText.indexOf("명") -1
-                finalCount = mText.substring(numberIndex, numberIndex+1)
+                numberIndex = mText.indexOf("명")
+                finalCount = mText.substring(numberIndex-1, numberIndex)
                 autoFile.appendText(" $finalCount 명만큼 증가 \n")
 
             }
         }
+    }//위의 finalCount는 string이나 이후 숫자로 이용해야한다면 toInt() 이용
 
+    private fun countFromQuantity(){
+        when(hasQuantity){
+            true -> {
+                autoFile.appendText("내용 : $mText\n")
+                getLocation()
+                var strBuffer = StringBuffer(mText)
+                strBuffer.replace(mText.indexOf("("), mText.indexOf(")"), "")
+                //괄호내용삭제구문(작동여부 미확인,)1-2,1-3 케이스는 해당 구문을 돌면 안됨
+                if(quantityCount == 1) {
+                    numberIndex = mText.indexOf("번")
+                    finalCount = mText.substring(numberIndex - 1, numberIndex)
+                    var area = mText.substring(mText.indexOf("-송출지역-") + 2).replace(" ", "")
+                    autoFile.appendText("$area $finalCount 번, 1명만큼 증가\n")//
+                }
+                else if(quantityCount >1){
+                }
+            }
+        }
+    }//번이 1개인 케이스에서는 수를 딱히 셀 필요 없으며 한명이 늘어난다, 고로 지역과 번호만 추출함
 
+    private fun decideQuantity(text : String) : Int{
+        quantityCount = text.toRegex().findAll("번").count()
+        return quantityCount
     }
 
     private fun getPeople(){
@@ -103,8 +134,11 @@ class AnalyzeMethod(text: String) {
             if(text.contains("번"))
                 hasQuantity = true
         }
-        else if(text.contains("번"))
+
+        else if(text.contains("번")){
             hasQuantity = true
+            decideQuantity(text)
+        }
         return when(condition){
             ONLY_HAS_NUMBER -> "번"
             ONLY_HAS_QUANTITY -> "명"
