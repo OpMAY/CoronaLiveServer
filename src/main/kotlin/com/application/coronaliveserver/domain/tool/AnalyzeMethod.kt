@@ -18,6 +18,9 @@ class AnalyzeMethod(text: String) {
     var finalCount = text
     var numberIndex = 0
     var quantityCount = 0
+    var quantityNumber = 0
+
+
 
 
 
@@ -81,7 +84,7 @@ class AnalyzeMethod(text: String) {
 
             }
         }
-    }//위의 finalCount는 string이나 이후 숫자로 이용해야한다면 toInt() 이용
+    }//finalcount가 명수, 지역은 getlocation으로 저장해놓았으나, 밑부턴 area로 했음, 고치거나해야함
 
     private fun countFromQuantity(){
         when(hasQuantity){
@@ -91,13 +94,31 @@ class AnalyzeMethod(text: String) {
                 var strBuffer = StringBuffer(mText)
                 strBuffer.replace(mText.indexOf("("), mText.indexOf(")"), "")
                 //괄호내용삭제구문(작동여부 미확인,)1-2,1-3 케이스는 해당 구문을 돌면 안됨
+                decideQuantity(mText)//번이 한개인지 여러개인지 확인
+                var area = mText.substring(mText.indexOf("["), mText.indexOf("[")+ 2)
+                quantityNumber = mText.replaceFirst("$area","").indexOf("$area")
+                //[]안에 지역이름 들어가는거 삭제용, 뒤의 quantityCount가 복수일때 필요함
                 if(quantityCount == 1) {
                     numberIndex = mText.indexOf("번")
-                    finalCount = mText.substring(numberIndex - 1, numberIndex)
-                    var area = mText.substring(mText.indexOf("-송출지역-") + 2).replace(" ", "")
-                    autoFile.appendText("$area $finalCount 번, 1명만큼 증가\n")//
-                }
+                    finalCount = mText.substring(quantityNumber, numberIndex).replace(" ","")
+                    autoFile.appendText("$area $finalCount 번, 1명만큼 증가\n")
+                }//area가 지역, finalCount가 지역 확진자 번호, 명수는 1명
+
+
+                //번은 하나인데 ~ 로직 들어갈 부분(~ 존재하면 복수로 ~없으면 단수로)
                 else if(quantityCount >1){
+                    mText.substring(mText.indexOf(area), mText.lastIndexOf("번"))
+                    var quantityList = mText.split("~")
+                    for (i in 0..1)
+                    {
+                        quantityList[i].toRegex().replace("""\D""", "" )
+                    }
+                    var finalQuantityCount = quantityList[1].toInt() - quantityList[0].toInt()
+                    autoFile.appendText("$area $finalQuantityCount 명만큼 증가 \n")
+                    //area가 지역, finalQuantityCount가 번호를 바탕으로 구한 명수
+
+                    //번호 저장할 for문 써야함
+
                 }
             }
         }
@@ -137,7 +158,6 @@ class AnalyzeMethod(text: String) {
 
         else if(text.contains("번")){
             hasQuantity = true
-            decideQuantity(text)
         }
         return when(condition){
             ONLY_HAS_NUMBER -> "번"
