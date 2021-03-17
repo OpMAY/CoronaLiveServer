@@ -77,7 +77,7 @@ class AnalyzeMethod(text: String) {
                 autoFile.appendText("내용 : $mText\n") //원형 저장
                 getLocation()
                 mText.toRegex().replace(" ", "")
-                println("$mText") //제대로 대체되었는지 확인용
+                println(mText) //제대로 대체되었는지 확인용
                 numberIndex = mText.indexOf("명")
                 finalCount = mText.substring(numberIndex-1, numberIndex)
                 autoFile.appendText(" $finalCount 명만큼 증가 \n")
@@ -91,12 +91,12 @@ class AnalyzeMethod(text: String) {
             true -> {
                 autoFile.appendText("내용 : $mText\n")
                 getLocation()
-                var strBuffer = StringBuffer(mText)
+                val strBuffer = StringBuffer(mText)
                 strBuffer.replace(mText.indexOf("("), mText.indexOf(")"), "")
                 //괄호내용삭제구문(작동여부 미확인,)1-2,1-3 케이스는 해당 구문을 돌면 안됨
                 decideQuantity(mText)//번이 한개인지 여러개인지 확인
-                var area = mText.substring(mText.indexOf("["), mText.indexOf("[")+ 2)
-                quantityNumber = mText.replaceFirst("$area","").indexOf("$area")
+                val area = mText.substring(mText.indexOf("["), mText.indexOf("[")+ 2)
+                quantityNumber = mText.replaceFirst(area,"").indexOf(area)
                 //[]안에 지역이름 들어가는거 삭제용, 뒤의 quantityCount가 복수일때 필요함
                 if(quantityCount == 1) {
                     numberIndex = mText.indexOf("번")
@@ -108,12 +108,12 @@ class AnalyzeMethod(text: String) {
                 //번은 하나인데 ~ 로직 들어갈 부분(~ 존재하면 복수로 ~없으면 단수로)
                 else if(quantityCount >1){
                     mText.substring(mText.indexOf(area), mText.lastIndexOf("번"))
-                    var quantityList = mText.split("~")
+                    val quantityList = mText.split("~")
                     for (i in 0..1)
                     {
                         quantityList[i].toRegex().replace("""\D""", "" )
                     }
-                    var finalQuantityCount = quantityList[1].toInt() - quantityList[0].toInt()
+                    val finalQuantityCount = quantityList[1].toInt() - quantityList[0].toInt()
                     autoFile.appendText("$area $finalQuantityCount 명만큼 증가 \n")
                     //area가 지역, finalQuantityCount가 번호를 바탕으로 구한 명수
 

@@ -13,17 +13,19 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import java.util.concurrent.TimeUnit
+import java.util.logging.Handler
 
 class Crolling {
     private lateinit var mtitle: String
     private lateinit var mtext: String
-    var dailyTotalInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
-    var dailyTotalIncreasedInfectedKorea : MutableMap<String, Int> = mutableMapOf("" to 0)
-    var dailyCoronaPhaseInfo : MutableMap<String, String> = mutableMapOf("" to "")
-    var pNum : Int = 0
-    var alertMessage : MutableMap<Int, String> = mutableMapOf(0 to "")
+    var dailyTotalInfectedKorea: MutableMap<String, Int> = mutableMapOf("" to 0)
+    var dailyTotalIncreasedInfectedKorea: MutableMap<String, Int> = mutableMapOf("" to 0)
+    var dailyCoronaPhaseInfo: MutableMap<String, String> = mutableMapOf("" to "")
+    var pNum: Int = 0
+    var alertMessage: MutableMap<Int, String> = mutableMapOf(0 to "")
+
     //거리두기 단계 정보
-    fun navigateLocalAlertPhaseInfo(){
+    fun navigateLocalAlertPhaseInfo() {
         // Set driver System path property
         setProperty()
         // Set selenium chrome options
@@ -42,11 +44,14 @@ class Crolling {
             val getKoreaAlertPhaseSpecific = driver.findElements(By.className("rssd_descript"))[i].text
             println(getKoreaAlertPhaseSpecific)
         }
-        for(i in 1..17){
-            val k = i+1
-            driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[1]/div[2]/div/button[$i]")).sendKeys(Keys.ENTER)
-            val title1 = driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/h3")).text
-            val title2 = driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/h4")).text
+        for (i in 1..17) {
+            val k = i + 1
+            driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[1]/div[2]/div/button[$i]"))
+                .sendKeys(Keys.ENTER)
+            val title1 =
+                driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/h3")).text
+            val title2 =
+                driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/h4")).text
             val p = driver.findElement(By.xpath("/html/body/div/form/div/div/div/div/div[3]/div[2]/div/div[$k]/p")).text
             println(title1)
             println(title2)
@@ -58,8 +63,9 @@ class Crolling {
         driver.quit()
 
     }
+
     //당일 확진자 정보
-    fun navigateDailyLocalCoronaInfectedInfo(){
+    fun navigateDailyLocalCoronaInfectedInfo() {
         // Set driver System path property
         setProperty()
         // Set selenium chrome options
@@ -69,7 +75,7 @@ class Crolling {
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
 
 
-        for(i in 1..19){
+        for (i in 1..19) {
             val locationName = driver.findElements(By.xpath("//table/tbody/tr[$i]/th"))
             val localInfectedNum = driver.findElements(By.xpath("//table/tbody/tr[$i]/td"))
             val increasedNum = localInfectedNum[0].text.replace(",", "").toInt()
@@ -84,6 +90,7 @@ class Crolling {
         driver.quit()
 
     }
+
     //재난문자 정보
     fun navigateLiveMessage() {
         // Set driver System path property
@@ -92,8 +99,9 @@ class Crolling {
         val driver = driverSet()
 
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
-        val startPage = 1 // Start Page
-        val count = 3 // 가져올 글 갯수
+        var startPage = 135 // Start Page
+        val count = 12 // 가져올 글 갯수
+        var selectNum = 0
 
         //URL OPEN
         driver.get(liveAlertMessageURL)
@@ -104,15 +112,47 @@ class Crolling {
         driver.findElement(By.cssSelector("a.go_btn")).sendKeys(Keys.ENTER)
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
 
+        Thread.sleep(500)
         //글의 번호 가져오기
-        pNum = driver.findElement(By.id("bbs_tr_0_num_td")).text.toInt()
-        GlobalScope.launch(Dispatchers.Default) {
-            
-        }
+        for(i in 0..9){
+            if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() == 4162) {
+                pNum = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt()
+                selectNum = i
+                break
+            }else{
+                if(i == 9){
+                    println("No number on this page")
+                    if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 4162 > 0) { //해당 경우 외엔 들어올 수 없음
+                        val numberDifference = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 4162
+                        startPage = startPage + numberDifference.div(10).toInt() + 1
+                        js.executeScript("document.getElementById('bbs_page').value = $startPage;")
+                        driver.findElement(By.cssSelector("a.go_btn")).sendKeys(Keys.ENTER)
+                        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS)
 
+                        Thread.sleep(500)
+                        for(j in 0..9){
+                            if(driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt() == 4162) {
+                                pNum = driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt()
+                                selectNum = j
+                                break
+                            }
+                            else
+                                println("Not matched Number in $j. Current Number : ${driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt()} ")
+                        }
+                    }
+                }
+                else
+                    println("Not matched Number in $i. Current Number : ${driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt()} ")
+            }
+        }
+        pNum = driver.findElement(By.id("bbs_tr_${selectNum}_num_td")).text.toInt()
+        println(pNum)
+        GlobalScope.launch(Dispatchers.Default) {
+            //여기엔 뭐 넣으려고 했음?
+        }
         //CLICK POST
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
-        driver.findElements(By.id("bbs_tr_0_bbs_title"))[0].sendKeys(Keys.ENTER)
+        driver.findElements(By.id("bbs_tr_${selectNum}_bbs_title"))[0].sendKeys(Keys.ENTER)
         var infectedMessage = 0
         for (i in 1..count) {
             //Find Article
@@ -133,9 +173,10 @@ class Crolling {
         }
         //Stop Crolling Driver
         driver.quit()
+
     }
 
-    fun autoUpdate(){
+    fun autoUpdate() {
         setProperty()
         val driver = driverSet()
         // Server Update Link
@@ -143,7 +184,7 @@ class Crolling {
         driver.quit()
     }
 
-    private fun driverSet() : WebDriver{
+    private fun driverSet(): WebDriver {
         // Set selenium chrome options
         val options = ChromeOptions()
         options.addArguments("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
@@ -160,8 +201,11 @@ class Crolling {
     }
 
     companion object {
-        const val liveAlertMessageURL = "https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679"
-        const val dailyCoronaInfectedInfoURL = "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun="
-        const val localAlertPhaseInfoURL = "http://ncov.mohw.go.kr/regSocdisBoardView.do?brdId=6&brdGubun=68&ncvContSeq=495"
+        const val liveAlertMessageURL =
+            "https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679"
+        const val dailyCoronaInfectedInfoURL =
+            "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun="
+        const val localAlertPhaseInfoURL =
+            "http://ncov.mohw.go.kr/regSocdisBoardView.do?brdId=6&brdGubun=68&ncvContSeq=495"
     }
 }
