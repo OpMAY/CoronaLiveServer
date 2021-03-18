@@ -5,7 +5,7 @@ import java.io.*
 class AnalyzeMethod(text: String) {
     var isKeywordCorrect : Boolean = false //수동처리용
     var isKeywordAuto : Boolean = false //자동처리용
-    private val mText = text
+    private var mText : String = text
     private var hasNumber = false
     private var hasQuantity = false
     private val condition = NumberingCondition(
@@ -42,13 +42,13 @@ class AnalyzeMethod(text: String) {
         val localSplit = mText.indexOf("-송출지역-") + 6
         val locationName = mText.substring(localSplit).replace(" ", "")
         println(locationName)
-        autoFile.appendText("$locationName\n")
+        autoFile.appendText("$locationName\n\n")
         //송출 지역 이후의 글자를 가져오고 싶음, 더 해봐야함
     }
 
 
     private fun firstFilter(){
-        if(mText.indexOf("확진")!= -1)//확진이라는 단어가 포함되어있다면
+        if(mText.contains("확진"))//확진이라는 단어가 포함되어있다면
         {
             isKeywordCorrect = true
             println("내용 : $mText\n")//프린트로 해놓았지만 1차적 관리장소로 전송 혹은 일단저장
@@ -61,9 +61,9 @@ class AnalyzeMethod(text: String) {
 
 
     private fun analyzePrep(){
-        if(mText.indexOf("확진자")!= -1 && mText.indexOf("발생")!= -1) {
+        if(mText.contains("확진자") && mText.contains("발생")) {
             isKeywordAuto = true
-            if (mText.indexOf("어제")!= -1){
+            if (mText.contains("어제")){
                 isKeywordAuto = false
             }
             hasNumberAndQuantity(mText)
@@ -91,15 +91,16 @@ class AnalyzeMethod(text: String) {
             true -> {
                 autoFile.appendText("내용 : $mText\n")
                 getLocation()
-                val strBuffer = StringBuffer(mText)
-                strBuffer.replace(mText.indexOf("("), mText.indexOf(")"), "")
-                //괄호내용삭제구문(작동여부 미확인,)1-2,1-3 케이스는 해당 구문을 돌면 안됨
+                var strBuffer = StringBuffer(mText)
+                mText = strBuffer.replace(mText.indexOf('('), mText.indexOf(')') + 1, "").toString()
+                //괄호내용삭제구문(작동여부 확인,)1-2,1-3 케이스는 해당 구문을 돌면 안됨 , 여러개도 삭제하는지 미확인
                 decideQuantity(mText)//번이 한개인지 여러개인지 확인
-                val area = mText.substring(mText.indexOf("["), mText.indexOf("[")+ 2)
-                quantityNumber = mText.replaceFirst(area,"").indexOf(area)
+                var area = mText.substring(1,3)
+                mText = mText.replaceFirst("$area","")//삭제 정상작동
+                quantityNumber = mText.indexOf("$area")
                 //[]안에 지역이름 들어가는거 삭제용, 뒤의 quantityCount가 복수일때 필요함
                 if(quantityCount == 1) {
-                    numberIndex = mText.indexOf("번")
+                    numberIndex = mText.indexOf('번')
                     finalCount = mText.substring(quantityNumber, numberIndex).replace(" ","")
                     autoFile.appendText("$area $finalCount 번, 1명만큼 증가\n")
                 }//area가 지역, finalCount가 지역 확진자 번호, 명수는 1명
@@ -107,13 +108,13 @@ class AnalyzeMethod(text: String) {
 
                 //번은 하나인데 ~ 로직 들어갈 부분(~ 존재하면 복수로 ~없으면 단수로)
                 else if(quantityCount >1){
-                    mText.substring(mText.indexOf(area), mText.lastIndexOf("번"))
-                    val quantityList = mText.split("~")
+                    mText.substring(mText.indexOf("$area"), mText.lastIndexOf("번"))
+                    var quantityList = mText.split("~")
                     for (i in 0..1)
                     {
                         quantityList[i].toRegex().replace("""\D""", "" )
                     }
-                    val finalQuantityCount = quantityList[1].toInt() - quantityList[0].toInt()
+                    var finalQuantityCount = quantityList[1].toInt() - quantityList[0].toInt()
                     autoFile.appendText("$area $finalQuantityCount 명만큼 증가 \n")
                     //area가 지역, finalQuantityCount가 번호를 바탕으로 구한 명수
 
@@ -125,7 +126,12 @@ class AnalyzeMethod(text: String) {
     }//번이 1개인 케이스에서는 수를 딱히 셀 필요 없으며 한명이 늘어난다, 고로 지역과 번호만 추출함
 
     private fun decideQuantity(text : String) : Int{
-        quantityCount = text.toRegex().findAll("번").count()
+        for (i in text){
+            if(i == '번')
+                quantityCount++
+        }
+        //quantityCount = text.toRegex().findAll("""번"""").count()
+        autoFile.appendText("확인용입니다!! \n $quantityCount 번 확인용입니다!! \n")
         return quantityCount
     }
 

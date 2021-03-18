@@ -99,7 +99,7 @@ class Crolling {
         val driver = driverSet()
 
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
-        var startPage = 135 // Start Page
+        var startPage = 174 // Start Page
         val count = 12 // 가져올 글 갯수
         var selectNum = 0
 
@@ -115,23 +115,23 @@ class Crolling {
         Thread.sleep(500)
         //글의 번호 가져오기
         for(i in 0..9){
-            if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() == 4162) {
+            if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() == 3864) {
                 pNum = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt()
                 selectNum = i
                 break
             }else{
                 if(i == 9){
                     println("No number on this page")
-                    if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 4162 > 0) { //해당 경우 외엔 들어올 수 없음
-                        val numberDifference = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 4162
-                        startPage = startPage + numberDifference.div(10).toInt() + 1
+                    if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 3864 > 0) { //해당 경우 외엔 들어올 수 없음
+                        val numberDifference = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 3864
+                        startPage += numberDifference.div(10) + 1
                         js.executeScript("document.getElementById('bbs_page').value = $startPage;")
                         driver.findElement(By.cssSelector("a.go_btn")).sendKeys(Keys.ENTER)
                         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS)
 
                         Thread.sleep(500)
                         for(j in 0..9){
-                            if(driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt() == 4162) {
+                            if(driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt() == 3864) {
                                 pNum = driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt()
                                 selectNum = j
                                 break
