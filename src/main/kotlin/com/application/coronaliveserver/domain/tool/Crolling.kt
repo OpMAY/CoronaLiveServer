@@ -32,7 +32,7 @@ class Crolling {
         val driver = driverSet()
 
         driver.get(localAlertPhaseInfoURL)
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS) // 0.5s delay
 
         val timetable = driver.findElement(By.className("info")).text
         println(timetable)
@@ -57,7 +57,7 @@ class Crolling {
             println(title2)
             println(p)
 
-            driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+            driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS) // 0.5s delay
         }
         //Stop Crolling Driver
         driver.quit()
@@ -72,7 +72,7 @@ class Crolling {
         val driver = driverSet()
 
         driver.get(dailyCoronaInfectedInfoURL)
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS) // 0.5s delay
 
 
         for (i in 1..19) {
@@ -99,39 +99,39 @@ class Crolling {
         val driver = driverSet()
 
         val js = driver as JavascriptExecutor // Execute JavaScript from driver
-        var startPage = 174 // Start Page
+        var startPage = 1 // Start Page
         val count = 12 // 가져올 글 갯수
         var selectNum = 0
 
         //URL OPEN
         driver.get(liveAlertMessageURL)
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS) // 0.5s delay
 
         //PAGE SET
         js.executeScript("document.getElementById('bbs_page').value = $startPage;")
         driver.findElement(By.cssSelector("a.go_btn")).sendKeys(Keys.ENTER)
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS) // 0.5s delay
 
-        Thread.sleep(500)
+        Thread.sleep(3000)
         //글의 번호 가져오기
         for(i in 0..9){
-            if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() == 3864) {
+            if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() == 5285) {
                 pNum = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt()
                 selectNum = i
                 break
             }else{
                 if(i == 9){
                     println("No number on this page")
-                    if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 3864 > 0) { //해당 경우 외엔 들어올 수 없음
-                        val numberDifference = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 3864
+                    if(driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 5285 > 0) { //해당 경우 외엔 들어올 수 없음
+                        val numberDifference = driver.findElement(By.id("bbs_tr_${i}_num_td")).text.toInt() - 5285
                         startPage += numberDifference.div(10) + 1
                         js.executeScript("document.getElementById('bbs_page').value = $startPage;")
                         driver.findElement(By.cssSelector("a.go_btn")).sendKeys(Keys.ENTER)
-                        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS)
+                        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS)
 
-                        Thread.sleep(500)
+                        Thread.sleep(3000)
                         for(j in 0..9){
-                            if(driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt() == 3864) {
+                            if(driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt() == 5285) {
                                 pNum = driver.findElement(By.id("bbs_tr_${j}_num_td")).text.toInt()
                                 selectNum = j
                                 break
@@ -151,7 +151,7 @@ class Crolling {
             //여기엔 뭐 넣으려고 했음?
         }
         //CLICK POST
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS) // 0.5s delay
+        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS) // 0.5s delay
         driver.findElements(By.id("bbs_tr_${selectNum}_bbs_title"))[0].sendKeys(Keys.ENTER)
         var infectedMessage = 0
         for (i in 1..count) {
